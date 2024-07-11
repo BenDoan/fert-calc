@@ -1,2 +1,17 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  import Calc from '$lib/components/Calc.svelte';
+</script>
+
+<div class="ml-10 mr-10">
+  <h1 class="text-3xl font-bold underline">
+    Fert Calc
+  </h1>
+
+  <Calc />
+</div>
+
+<style lang="postcss">
+  :global(html) {
+    background-color: theme(colors.gray.100);
+  }
+</style>
