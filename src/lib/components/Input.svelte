@@ -1,5 +1,5 @@
 <script>
-  import { files, isValidated } from '$lib/store.js';
+  import { files, year, isValidated } from '$lib/store.js';
   import { FileType } from '$lib/constants.ts';
 
   let configFile
@@ -52,6 +52,13 @@
 
   <label for="inventoryFile">Inventory File</label>
   <input type="file" accept="text/csv" id="inventoryFile" name="inventoryFile" on:change={event => onchange(event, FileType.INVENTORY)} />
+
+  <br>
+
+  <label for="Year" >Year</label>
+  <input type="text" class="mt-5" id="year" name="year" bind:value={$year} />
+
+  <br>
 
   <button on:click={submit} class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
 </div>

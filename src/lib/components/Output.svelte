@@ -2,7 +2,7 @@
   import * as Papa from 'papaparse'
   import { FileType } from '$lib/constants.ts';
   import { getAliases } from '$lib/calc.ts';
-  import { files, isValidated } from '$lib/store.js';
+  import { files, year, isValidated } from '$lib/store.js';
 
   let config
   let inventory
@@ -14,7 +14,7 @@
 
   function reset() {
     isValidated.set(false)
-    files.set(false)
+    files.set({})
   }
 
   function generate() {
@@ -36,7 +36,7 @@
 
     for (const imprt of imports.data) {
 
-      const numCol = "2020"
+      const numCol = $year
       const quantityInImportsStr = imprt[numCol]
 
       if (!quantityInImportsStr) {
@@ -50,6 +50,8 @@
 
       const productRecipe = config["product-recipes"][cannonicalProduct]
 
+      console.log("Processing row", imprt)
+      console.log(`Extracting quantity for ${product} from col ${numCol}: ${quantityInImports}`)
       if (productRecipe) {
         for (const [recipeName, ratioOfrecipe] of Object.entries(productRecipe)) {
           const totalAmountOfIngredient = ratioOfrecipe * quantityInImports * 2000
@@ -61,7 +63,7 @@
         missingRecipies.push(cannonicalProduct)
         console.error(`Failed to find recipe for ${product}`)
       }
-
+      console.log("")
     }
 
     const chemNamesInImports = new Set(Object.keys(chemNameToAmount))
@@ -75,9 +77,7 @@
         }
       }
     }
-    console.log("chemNameToInventoryData", chemNameToInventoryData)
 
-    // Lookup CASNumbers
     for (const [chemName, amount] of Object.entries(chemNameToAmount)) {
       chemNameToData[chemName] = {
         amount: amount,
@@ -87,22 +87,19 @@
     }
 
 
-    missingRecipies = missingRecipies
+    missingRecipies = [...new Set(missingRecipies)].join(", ")
+    chemNameToData = chemNameToData
   }
 
 </script>
 
-<p>Output</p>
-
+{#if Object.keys(chemNameToData).length > 0}
 <button class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={reset}>Reset</button>
-<button class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={generate}>Gen</button>
-
-{#if chemNameToData}
   <table>
     <tr>
       <th>Ingredient</th>
       <th>CAS Number</th>
-      <th>Amount</th>
+      <th>Amount (lbs)</th>
     </tr>
 
     {#each Object.entries(chemNameToData) as [ingredient, data]}
@@ -123,11 +120,13 @@
       </tr>
     {/each}
   </table>
+{:else}
+<button class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={generate}>Gen</button>
 {/if}
 
-{#if missingRecipies}
+{#if Object.keys(missingRecipies).length > 0}
   <div class="mt-20">
-    Missing recipes: {missingRecipies}
+    Missing product recipes: {missingRecipies}
   </div>
 {/if}
 
