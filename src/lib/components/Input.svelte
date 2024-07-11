@@ -47,10 +47,10 @@
   <label for="configFile">Config File</label>
   <input type="file" accept="application/json" id="configFile" name="configFile" bind:value={configFile} on:change={event => onchange(event, FileType.CONFIG)} />
 
-  <label for="importsFile">Imports File</label>
+  <label for="importsFile">Imports File (CSV)</label>
   <input type="file" accept="text/csv" id="importsFile" name="importsFile" on:change={event => onchange(event, FileType.IMPORTS)} />
 
-  <label for="inventoryFile">Inventory File</label>
+  <label for="inventoryFile">Inventory File (CSV)</label>
   <input type="file" accept="text/csv" id="inventoryFile" name="inventoryFile" on:change={event => onchange(event, FileType.INVENTORY)} />
 
   <br>
