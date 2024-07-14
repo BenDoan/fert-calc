@@ -1,7 +1,7 @@
 <script>
   import * as Papa from 'papaparse'
   import { FileType } from '$lib/constants.ts';
-  import { getAliases } from '$lib/calc.ts';
+  import { getAliases, truncateHeader } from '$lib/calc.ts';
   import { files, year, isValidated } from '$lib/store.js';
 
   let config
@@ -25,9 +25,9 @@
       dynamicTypeing: true,
     })
 
-    // Remove unneeded secondary header
-    const allButFirstImportsCsv = $files[FileType.IMPORTS].split(/\r?\n/).slice(4).join("\n")
-    imports = Papa.parse(allButFirstImportsCsv, {
+    // Remove unneeded secondary header if present
+    const importsCsv = truncateHeader($files[FileType.IMPORTS], "product")
+    imports = Papa.parse(importsCsv, {
       header: true,
       dynamicTypeing: true,
     })
@@ -40,12 +40,12 @@
       const quantityInImportsStr = imprt[numCol]
 
       if (!quantityInImportsStr) {
-        console.error(`Failed to find entry for numCol: ${numCol}, options: ${Object.keys(imprt)}`)
+        console.log(`Failed to find entry for numCol: ${numCol}, options: ${Object.keys(imprt)}`, imprt)
         continue
       }
 
       const quantityInImports = parseInt(quantityInImportsStr.replace(",", ""))
-      const product = imprt["PRODUCT"]
+      const product = imprt["PRODUCT"] || imprt["product"] || imprt["Product"]
       const cannonicalProduct = aliases[product] ?? product
 
       const productRecipe = config["product-recipes"][cannonicalProduct]
@@ -63,6 +63,7 @@
         missingRecipies.push(cannonicalProduct)
         console.error(`Failed to find recipe for ${product}`)
       }
+      console.log("==============")
       console.log("")
     }
 
