@@ -43,25 +43,31 @@
   }
 </script>
 
-<div class="w-full max-w-sm ml-5">
-  <label for="configFile">Config File</label>
-  <input type="file" accept="application/json" id="configFile" name="configFile" bind:value={configFile} on:change={event => onchange(event, FileType.CONFIG)} />
+<form>
+  <div class="mb-4">
+      <label for="configFile">Composition Data</label>
+      <input type="file" accept="application/json" id="configFile" name="configFile" bind:value={configFile} on:change={event => onchange(event, FileType.CONFIG)} />
+  </div>
 
-  <label for="importsFile">Imports File (CSV)</label>
-  <input type="file" accept="text/csv" id="importsFile" name="importsFile" on:change={event => onchange(event, FileType.IMPORTS)} />
+  <div class="mb-4">
+    <label for="importsFile">Import / Production Volumes (CSV)</label>
+    <input type="file" accept="text/csv" id="importsFile" name="importsFile" on:change={event => onchange(event, FileType.IMPORTS)} />
+  </div>
 
-  <label for="inventoryFile">Inventory File (CSV)</label>
-  <input type="file" accept="text/csv" id="inventoryFile" name="inventoryFile" on:change={event => onchange(event, FileType.INVENTORY)} />
+  <div class="mb-4">
+    <label for="inventoryFile">TSCA Inventory File (CSV)</label>
+    <input type="file" accept="text/csv" id="inventoryFile" name="inventoryFile" on:change={event => onchange(event, FileType.INVENTORY)} />
+  </div>
+
+  <div class="mb-4">
+    <label for="Year" >Year</label>
+    <input type="text" id="year" name="year" bind:value={$year} />
+  </div>
 
   <br>
 
-  <label for="Year" >Year</label>
-  <input type="text" class="mt-5" id="year" name="year" bind:value={$year} />
-
-  <br>
-
-  <button on:click={submit} class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-</div>
+  <button on:click={submit} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+</form>
 
 <style>
 </style>

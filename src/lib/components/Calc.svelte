@@ -10,11 +10,13 @@ TODO:
    **/
 </script>
 
-{#if $isValidated}
-  <Output />
-{:else}
-  <Input />
-{/if}
+<div class="w-screen">
+  {#if $isValidated}
+    <Output />
+  {:else}
+    <Input />
+  {/if}
+</div>
 
 <style>
 </style>

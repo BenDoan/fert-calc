@@ -95,23 +95,23 @@
 </script>
 
 {#if Object.keys(chemNameToData).length > 0}
-<button class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={reset}>Reset</button>
-  <table>
+<button class="mt-5 mb-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={reset}>Reset</button>
+  <table class="table-auto border-collapse border border-slate-400">
     <tr>
-      <th>Ingredient</th>
-      <th>CAS Number</th>
-      <th>Amount (lbs)</th>
+      <th class="border border-slate-400 px-4">Substance</th>
+      <th class="border border-slate-400 px-4">CAS Number</th>
+      <th class="border border-slate-400 px-4">Production Volume (lbs)</th>
     </tr>
 
     {#each Object.entries(chemNameToData) as [ingredient, data]}
       <tr class="odd:bg-white even:bg-gray-200">
-        <td>{ingredient}</td>
-        <td>
+        <td class="border border-slate-400 px-4">{ingredient}</td>
+        <td class="border border-slate-400 px-4">
           {#if data.casNumber}
             {data.casNumber}
           {/if}
         </td>
-        <td class="text-right">
+        <td class="border border-slate-400 px-4 text-right">
           {#if data.isActive}
             {data.amount.toLocaleString('en-US')}
           {:else}
@@ -127,7 +127,7 @@
 
 {#if Object.keys(missingRecipies).length > 0}
   <div class="mt-20">
-    Missing product recipes: {missingRecipies}
+    Missing products: {missingRecipies}
   </div>
 {/if}
 
