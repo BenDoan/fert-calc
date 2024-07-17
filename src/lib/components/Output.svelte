@@ -33,6 +33,7 @@
     })
 
     const aliases = getAliases(config)
+    console.log("Aliases", aliases)
 
     for (const imprt of imports.data) {
 
@@ -46,21 +47,23 @@
 
       const quantityInImports = parseInt(quantityInImportsStr.replace(",", ""))
       const product = imprt["PRODUCT"] || imprt["product"] || imprt["Product"]
-      const cannonicalProduct = aliases[product] ?? product
+      const canonicalProduct = aliases.get(product) ?? product
 
-      const productRecipe = config["product-recipes"][cannonicalProduct]
+      console.log(`Product:${product}, Canonical Product:${canonicalProduct}`)
+
+      const productRecipe = config["product-recipes"][canonicalProduct]
 
       console.log("Processing row", imprt)
       console.log(`Extracting quantity for ${product} from col ${numCol}: ${quantityInImports}`)
       if (productRecipe) {
         for (const [recipeName, ratioOfrecipe] of Object.entries(productRecipe)) {
           const totalAmountOfIngredient = ratioOfrecipe * quantityInImports * 2000
-          console.log(`For ${cannonicalProduct},${recipeName}: ${ratioOfrecipe} * ${quantityInImports} = ${totalAmountOfIngredient}`)
+          console.log(`For ${canonicalProduct},${recipeName}: ${ratioOfrecipe} * ${quantityInImports} = ${totalAmountOfIngredient}`)
 
           chemNameToAmount[recipeName] = (chemNameToAmount[recipeName] ?? 0) + totalAmountOfIngredient
         }
       } else {
-        missingRecipies.push(cannonicalProduct)
+        missingRecipies.push(canonicalProduct)
         console.error(`Failed to find recipe for ${product}`)
       }
       console.log("==============")
@@ -95,7 +98,12 @@
 </script>
 
 {#if Object.keys(chemNameToData).length > 0}
-<button class="mt-5 mb-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={reset}>Reset</button>
+  <button class="mt-5 mb-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={reset}>Reset</button>
+
+  <div>
+    Year: {$year}
+  </div>
+
   <table class="table-auto border-collapse border border-slate-400">
     <tr>
       <th class="border border-slate-400 px-4">Substance</th>
