@@ -78,6 +78,7 @@
         chemNameToInventoryData[inventoryItem.ChemName] = {
           isActive: inventoryItem.ACTIVITY == "ACTIVE",
           casNumber: inventoryItem.CASRN,
+          flag: inventoryItem.FLAG,
         }
       }
     }
@@ -87,6 +88,7 @@
         amount: amount,
         isActive: chemNameToInventoryData[chemName]?.isActive,
         casNumber: chemNameToInventoryData[chemName]?.casNumber,
+        flag: chemNameToInventoryData[chemName]?.flag,
       }
     }
 
@@ -108,6 +110,7 @@
     <tr>
       <th class="border border-slate-400 px-4">Substance</th>
       <th class="border border-slate-400 px-4">CAS Number</th>
+      <th class="border border-slate-400 px-4">Flag</th>
       <th class="border border-slate-400 px-4">Production Volume (lbs)</th>
     </tr>
 
@@ -117,6 +120,11 @@
         <td class="border border-slate-400 px-4">
           {#if data.casNumber}
             {data.casNumber}
+          {/if}
+        </td>
+        <td class="border border-slate-400 px-4">
+          {#if data.flag}
+            {data.flag}
           {/if}
         </td>
         <td class="border border-slate-400 px-4 text-right">
